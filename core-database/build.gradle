@@ -1,0 +1,7 @@
+dependencies {
+    implementation project(':core-model')
+    
+    api 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+
+    runtimeOnly 'com.mysql:mysql-connector-j'
+}

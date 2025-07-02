@@ -1,0 +1,17 @@
+spring.config.activate.on-profile: local
+
+spring:
+  data:
+    redis:
+      host: ${redis-local-host}
+      port: ${redis-local-port}
+      timeout: 3000
+---
+spring.config.activate.on-profile: prod
+
+spring:
+  data:
+    redis:
+      host: ${redis-prod-host}
+      port: ${redis-local-port}
+      timeout: 3000

@@ -1,1 +1,15 @@
-rootProject.name = 'chat'
+pluginManagement {
+    plugins {
+        id 'org.springframework.boot' version "${springBootVersion}"
+        id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+        id 'com.diffplug.spotless' version "${spotlessVersion}"
+        id 'com.palantir.java-format' version "${palantirJavaFormatVersion}"
+    }
+}
+
+rootProject.name = 'core'
+
+include 'core-database'
+include 'core-api'
+include 'core-model'
+include 'core-redis'
