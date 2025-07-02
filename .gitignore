@@ -1,4 +1,6 @@
+docker/data/**
 Claude.md
+
 HELP.md
 .gradle
 build/
