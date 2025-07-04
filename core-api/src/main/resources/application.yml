@@ -6,6 +6,7 @@ spring:
     import:
       - database.yml
       - redis.yml
+      - mail.yml
 
   web.resources.add-mappings: false
 

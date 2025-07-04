@@ -10,7 +10,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import codestream.jungmini.me.model.UserSession;
 import codestream.jungmini.me.support.constant.Constants;
-import codestream.jungmini.me.support.error.ChatCustomException;
+import codestream.jungmini.me.support.error.CustomException;
 import codestream.jungmini.me.support.error.ErrorType;
 
 public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
@@ -31,7 +31,7 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
         UserSession currentUser = (UserSession) request.getSession().getAttribute(Constants.USER_SESSION_KEY);
 
         if (currentUser == null) {
-            throw new ChatCustomException(ErrorType.AUTHENTICATION_ERROR, "인증이 필요한 요청입니다.");
+            throw new CustomException(ErrorType.AUTHENTICATION_ERROR, "인증이 필요한 요청입니다.");
         }
 
         return currentUser;

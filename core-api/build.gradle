@@ -4,6 +4,7 @@ jar.enabled = false
 dependencies {
     implementation project(":core-database")
     implementation project(":core-redis")
+    implementation project(":core-mail")
     implementation project(":core-model")
 
     // Spring MVC

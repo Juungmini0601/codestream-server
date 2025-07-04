@@ -1,6 +1,6 @@
 package codestream.jungmini.me.api;
 
-import jakarta.servlet.http.HttpServletRequest;
+import codestream.jungmini.me.service.AuthService;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import codestream.jungmini.me.api.dto.UserLoginRequest;
 import codestream.jungmini.me.api.dto.UserRegisterRequest;
 import codestream.jungmini.me.model.User;
 import codestream.jungmini.me.model.UserSession;
 import codestream.jungmini.me.service.UserService;
 import codestream.jungmini.me.support.aop.Auth;
-import codestream.jungmini.me.support.constant.Constants;
 import codestream.jungmini.me.support.response.ApiResponse;
 
 @Slf4j
@@ -26,20 +24,14 @@ import codestream.jungmini.me.support.response.ApiResponse;
 public class UserRestController {
 
     private final UserService userService;
+    private final AuthService authService;
 
     @PostMapping("/api/v1/users")
     public ApiResponse<?> register(@RequestBody @Valid UserRegisterRequest request) {
         User user = request.toDomain();
+        authService.checkVerifiedEmail(user.getEmail());
         userService.addUser(user);
 
-        return ApiResponse.success();
-    }
-
-    @PostMapping("/api/v1/users/login")
-    public ApiResponse<?> login(@RequestBody @Valid UserLoginRequest request, HttpServletRequest servletRequest) {
-        User user = userService.login(request.email(), request.password());
-        UserSession userSession = UserSession.from(user);
-        servletRequest.getSession().setAttribute(Constants.USER_SESSION_KEY, userSession);
         return ApiResponse.success();
     }
 

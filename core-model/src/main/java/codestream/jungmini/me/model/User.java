@@ -20,6 +20,7 @@ public class User {
     private String email;
     private String nickname;
     private String password;
+    private UserRole role;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -29,5 +30,9 @@ public class User {
         }
 
         this.password = password;
+    }
+
+    public void changeRole(UserRole role) {
+        this.role = role;
     }
 }

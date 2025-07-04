@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 @Configuration
-@MapperScan("chat.jungmini.me.database.mapper")
+@MapperScan("codestream.jungmini.me.database.mapper")
 public class MyBatisConfig {
 
     @Bean

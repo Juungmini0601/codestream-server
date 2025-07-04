@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.extern.slf4j.Slf4j;
 
-import codestream.jungmini.me.support.error.ChatCustomException;
+import codestream.jungmini.me.support.error.CustomException;
 import codestream.jungmini.me.support.error.ErrorType;
 import codestream.jungmini.me.support.response.ApiResponse;
 
@@ -20,8 +20,8 @@ import codestream.jungmini.me.support.response.ApiResponse;
 @RestControllerAdvice
 public class ApiControllerAdvice {
 
-    @ExceptionHandler(ChatCustomException.class)
-    public ResponseEntity<ApiResponse<?>> handleChatCustomException(ChatCustomException exception) {
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ApiResponse<?>> handleChatCustomException(CustomException exception) {
         switch (exception.getErrorType().getLogLevel()) {
             case ERROR -> log.error("ChatCustomException : {}", exception.getMessage(), exception);
             case WARN -> log.warn("ChatCustomException : {}", exception.getMessage(), exception);

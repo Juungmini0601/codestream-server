@@ -4,7 +4,7 @@ import spock.lang.Specification
 
 import codestream.jungmini.me.database.repository.UserRepository
 import codestream.jungmini.me.model.User
-import codestream.jungmini.me.support.error.ChatCustomException
+import codestream.jungmini.me.support.error.CustomException
 import codestream.jungmini.me.support.error.ErrorType
 
 class UserServiceTest extends Specification {
@@ -48,7 +48,7 @@ class UserServiceTest extends Specification {
         userService.addUser(user)
 
         then:
-        def exception = thrown(ChatCustomException)
+        def exception = thrown(CustomException)
         exception.errorType == ErrorType.VALIDATION_ERROR
     }
 
@@ -84,7 +84,7 @@ class UserServiceTest extends Specification {
         userService.login(email, password)
 
         then:
-        def exception = thrown(ChatCustomException)
+        def exception = thrown(CustomException)
         exception.errorType == ErrorType.VALIDATION_ERROR
     }
 
@@ -106,7 +106,7 @@ class UserServiceTest extends Specification {
         userService.login(email, password)
 
         then:
-        def exception = thrown(ChatCustomException)
+        def exception = thrown(CustomException)
         exception.errorType == ErrorType.AUTHENTICATION_ERROR
     }
 
