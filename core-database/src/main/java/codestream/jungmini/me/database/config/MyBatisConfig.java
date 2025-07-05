@@ -22,7 +22,7 @@ public class MyBatisConfig {
         sessionFactory.setMapperLocations(
                 new PathMatchingResourcePatternResolver().getResources("classpath:mappers/*.xml"));
         // TypeAliasesPackages 설정
-        sessionFactory.setTypeAliasesPackage("chat.jungmini.me.model");
+        sessionFactory.setTypeAliasesPackage("codestream.jungmini.me.model");
 
         // MyBatis Configuration 설정
         org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();

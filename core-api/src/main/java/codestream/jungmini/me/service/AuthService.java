@@ -81,7 +81,7 @@ public class AuthService {
         // 소셜 로그인 정보가 있을 경우 유저 정보를 찾아서 반환
         return userRepository.findByProviderIdAndProvider(providerId, provider).orElseGet(() -> {
             User user = userRepository.findByEmail(email).orElse(null);
-
+            // 기존 회원이었을 경우 소셜 로그인 정보만 추가
             if (user != null) {
                 Oauth oauth = Oauth.with(user.getUserId(), provider, providerId);
                 oauthRepository.save(oauth);
