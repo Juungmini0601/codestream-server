@@ -12,21 +12,29 @@
     </select>
 
     <select id="findById" parameterType="long" resultType="codestream.jungmini.me.model.User">
-        SELECT user_id, email, nickname, password, created_at, updated_at
+        SELECT user_id, email, nickname, role, password, created_at, updated_at
         FROM users
         WHERE users.user_id = #{id}
     </select>
+
     <!--  Optional Mapping은 알아서 해줌  -->
     <select id="findByEmail" parameterType="string" resultType="codestream.jungmini.me.model.User">
-        SELECT user_id, email, nickname, password, created_at, updated_at
+        SELECT user_id, email, nickname, role, password, created_at, updated_at
         FROM users
         WHERE users.email = #{email}
     </select>
 
+    <select id="findByProviderIdAndProvider" resultType="codestream.jungmini.me.model.User">
+        SELECT u.user_id, u.email, u.nickname, u.role, u.password, u.created_at, u.updated_at
+        FROM users u
+        INNER JOIN oauths o ON u.user_id = o.user_id
+        WHERE o.provider_id = #{providerId} AND o.provider = #{provider}
+    </select>
+
     <!--  useGeneratedKeys = AutoIncrement Key 값 받아 올 수 있음, keyPropery PK 지정  -->
     <insert id="save" parameterType="codestream.jungmini.me.model.User" useGeneratedKeys="true" keyProperty="userId">
-        INSERT INTO users (email, nickname, password, created_at, updated_at)
-        VALUES (#{email}, #{nickname}, #{password}, #{createdAt}, #{updatedAt})
+        INSERT INTO users (email, nickname, role, password, created_at, updated_at)
+        VALUES (#{email}, #{nickname}, #{role}, #{password}, #{createdAt}, #{updatedAt})
     </insert>
     
 </mapper>

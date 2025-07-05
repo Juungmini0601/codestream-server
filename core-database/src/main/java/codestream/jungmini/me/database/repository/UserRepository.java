@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import codestream.jungmini.me.database.mapper.UserMapper;
+import codestream.jungmini.me.model.OAuthProvider;
 import codestream.jungmini.me.model.User;
 
 @Repository
@@ -25,16 +26,13 @@ public class UserRepository {
         return userMapper.findByEmail(email);
     }
 
+    public Optional<User> findByProviderIdAndProvider(String providerId, OAuthProvider oAuthProvider) {
+        return userMapper.findByProviderIdAndProvider(providerId, oAuthProvider);
+    }
+
     @Transactional
     public User save(User user) {
-        long id = userMapper.save(user);
-        return User.builder()
-                .userId(id)
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .nickname(user.getNickname())
-                .createdAt(user.getCreatedAt())
-                .updatedAt(user.getUpdatedAt())
-                .build();
+        userMapper.save(user);
+        return user;
     }
 }

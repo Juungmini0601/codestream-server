@@ -35,4 +35,15 @@ public class User {
     public void changeRole(UserRole role) {
         this.role = role;
     }
+
+    public static User from(final String email, final String password, UserRole role) {
+        return builder()
+                .email(email)
+                .nickname("기본 닉네임")
+                .password(password)
+                .role(role)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+    }
 }

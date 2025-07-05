@@ -23,7 +23,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @Slf4j
 @Configuration
 @EnableRedisHttpSession(
-        redisNamespace = "chat:user_session",
+        redisNamespace = "codestream",
         maxInactiveIntervalInSeconds = 300,
         flushMode = FlushMode.IMMEDIATE)
 public class RedisConfig {

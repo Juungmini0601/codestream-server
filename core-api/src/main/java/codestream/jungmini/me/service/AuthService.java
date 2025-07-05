@@ -1,17 +1,21 @@
 package codestream.jungmini.me.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+import codestream.jungmini.me.database.repository.OauthRepository;
 import codestream.jungmini.me.database.repository.UserRepository;
 import codestream.jungmini.me.mail.service.MailService;
+import codestream.jungmini.me.model.OAuthProvider;
+import codestream.jungmini.me.model.Oauth;
 import codestream.jungmini.me.model.User;
+import codestream.jungmini.me.model.UserRole;
 import codestream.jungmini.me.model.UserSession;
 import codestream.jungmini.me.redis.service.RedisService;
 import codestream.jungmini.me.support.error.CustomException;
 import codestream.jungmini.me.support.error.ErrorType;
-import lombok.experimental.NonFinal;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +26,7 @@ public class AuthService {
     private final MailService mailService;
     private final RedisService redisService;
     private final PasswordEncoder passwordEncoder;
+    private final OauthRepository oauthRepository;
 
     private static final String VERIFICATION_CODE_PREFIX = "auth:verification-code:";
     private static final Integer VERIFICATION_TTL_SECOND = 5 * 60;
@@ -51,8 +56,9 @@ public class AuthService {
     }
 
     public boolean checkVerifiedEmail(final String email) {
-        redisService.get(VERIFICATION_EMAIL_PREFIX + email, String.class)
-            .orElseThrow(() -> new CustomException(ErrorType.VALIDATION_ERROR, "인증되지 않은 이메일 입니다."));
+        redisService
+                .get(VERIFICATION_EMAIL_PREFIX + email, String.class)
+                .orElseThrow(() -> new CustomException(ErrorType.VALIDATION_ERROR, "인증되지 않은 이메일 입니다."));
 
         return true;
     }
@@ -70,5 +76,26 @@ public class AuthService {
         return UserSession.from(user);
     }
 
+    @Transactional
+    public User oauth2Login(final String email, final String providerId, OAuthProvider provider) {
+        // 소셜 로그인 정보가 있을 경우 유저 정보를 찾아서 반환
+        return userRepository.findByProviderIdAndProvider(providerId, provider).orElseGet(() -> {
+            User user = userRepository.findByEmail(email).orElse(null);
 
+            if (user != null) {
+                Oauth oauth = Oauth.with(user.getUserId(), provider, providerId);
+                oauthRepository.save(oauth);
+                return user;
+            }
+
+            // 회원을 생성
+            UserRole role = email.equals("jungmini0601@gmail.com") ? UserRole.ROLE_ADMIN : UserRole.ROLE_USER;
+            User newUser = User.from(email, passwordEncoder.hash(verificationCodeGenerator.generate()), role);
+            User savedUser = userRepository.save(newUser);
+
+            Oauth oauth = Oauth.with(savedUser.getUserId(), provider, providerId);
+            oauthRepository.save(oauth);
+            return savedUser;
+        });
+    }
 }

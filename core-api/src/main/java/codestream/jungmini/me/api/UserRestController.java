@@ -1,6 +1,5 @@
 package codestream.jungmini.me.api;
 
-import codestream.jungmini.me.service.AuthService;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import codestream.jungmini.me.api.dto.UserRegisterRequest;
 import codestream.jungmini.me.model.User;
 import codestream.jungmini.me.model.UserSession;
+import codestream.jungmini.me.service.AuthService;
 import codestream.jungmini.me.service.UserService;
 import codestream.jungmini.me.support.aop.Auth;
 import codestream.jungmini.me.support.response.ApiResponse;

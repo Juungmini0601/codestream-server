@@ -4,7 +4,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: qwer1234
-      MYSQL_DATABASE: chat
+      MYSQL_DATABASE: codestream
       MYSQL_USER: jungmini
       MYSQL_PASSWORD: qwer1234
     ports:

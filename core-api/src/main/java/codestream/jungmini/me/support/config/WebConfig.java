@@ -3,6 +3,7 @@ package codestream.jungmini.me.support.config;
 import java.util.List;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 import codestream.jungmini.me.support.aop.AdminInterceptor;
 import codestream.jungmini.me.support.aop.AuthArgumentResolver;
+import codestream.jungmini.me.support.aop.OauthProviderConverter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -37,5 +39,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(adminInterceptor).addPathPatterns("/**");
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(new OauthProviderConverter());
     }
 }

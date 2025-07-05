@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS users
 
 CREATE TABLE IF NOT EXISTS `oauths`
 (
-    `id`          BIGINT PRIMARY KEY AUTO_INCREMENT,
-    `provider`    ENUM ('GOOGLE', 'GITHUB') NOT NULL,
+    `oauthId`          BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `provider`    ENUM ('GOOGLE', 'KAKAO') NOT NULL,
     `provider_id` VARCHAR(255)              NOT NULL,
     `user_id`     BIGINT                    NOT NULL,
     `created_at`  DATETIME                  NOT NULL,
