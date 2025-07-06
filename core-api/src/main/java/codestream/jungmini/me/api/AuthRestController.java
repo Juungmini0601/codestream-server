@@ -67,8 +67,12 @@ public class AuthRestController {
     }
 
     @GetMapping("/api/v1/auth/{provider}/login/callback")
-    public ApiResponse<UserSession> oauthLoginCallback(
-            @PathVariable("provider") OAuthProvider provider, @RequestParam String code, HttpSession session) {
+    public void oauthLoginCallback(
+            @PathVariable("provider") OAuthProvider provider,
+            @RequestParam String code,
+            HttpServletResponse httpServletResponse,
+            HttpSession session)
+            throws Exception {
         OauthClient client = oauthClientFactory.getClient(provider);
         OauthResponse oauthResponse = client.getUserInfo(code);
 
@@ -77,6 +81,12 @@ public class AuthRestController {
         UserSession userSession = UserSession.from(user);
 
         session.setAttribute(Constants.USER_SESSION_KEY, userSession);
-        return ApiResponse.success(userSession);
+        // TODO 환경 변수 예정
+        httpServletResponse.sendRedirect("http://localhost:5173");
+    }
+
+    @PostMapping("/api/v1/auth/logout")
+    public void logout(HttpSession httpSession) {
+        httpSession.invalidate();
     }
 }
