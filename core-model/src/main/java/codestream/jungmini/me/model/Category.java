@@ -21,6 +21,11 @@ public class Category {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    public void changeName(final String name) {
+        this.name = name;
+        updatedAt = LocalDateTime.now();
+    }
+
     public static Category from(final String name) {
         return builder()
                 .name(name)

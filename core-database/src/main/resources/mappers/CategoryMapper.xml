@@ -2,18 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="codestream.jungmini.me.database.mapper.CategoryMapper">
-    
+
     <select id="existsByName" parameterType="string" resultType="boolean">
-        SELECT EXISTS(
-            SELECT 1 
-            FROM categories
-            WHERE name = #{name}
-        ) AS result
+        SELECT EXISTS(SELECT 1
+                      FROM categories
+                      WHERE name = #{name}) AS result
     </select>
 
-    <insert id="save" parameterType="codestream.jungmini.me.model.Category" useGeneratedKeys="true" keyProperty="categoryId">
+    <select id="findByName" parameterType="String" resultType="codestream.jungmini.me.model.Category">
+        SELECT category_id, name, created_at, updated_at
+        FROM categories
+        WHERE name = #{name}
+    </select>
+
+    <select id="findById" parameterType="Long" resultType="codestream.jungmini.me.model.Category">
+        SELECT category_id, name, created_at, updated_at
+        FROM categories
+        WHERE category_id = #{id}
+    </select>
+
+    <update id="update" parameterType="codestream.jungmini.me.model.Category">
+        UPDATE categories
+        SET name = #{name},
+            updated_at = #{updatedAt}
+        WHERE category_id = #{categoryId}
+    </update>
+
+    <insert id="save" parameterType="codestream.jungmini.me.model.Category" useGeneratedKeys="true"
+            keyProperty="categoryId">
         INSERT INTO categories(name, created_at, updated_at)
-        VALUES ( #{name}, #{createdAt}, #{updatedAt} )
+        VALUES (#{name}, #{createdAt}, #{updatedAt})
     </insert>
-    
+
 </mapper>

@@ -1,5 +1,7 @@
 package codestream.jungmini.me.database.repository;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,22 @@ public class CategoryRepository {
     @Transactional(readOnly = true)
     public boolean existsByName(final String name) {
         return categoryMapper.existsByName(name);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Category> findByName(final String name) {
+        return categoryMapper.findByName(name);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Category> findById(final Long id) {
+        return categoryMapper.findById(id);
+    }
+
+    @Transactional
+    public Category update(Category category) {
+        categoryMapper.update(category);
+        return category;
     }
 
     @Transactional
