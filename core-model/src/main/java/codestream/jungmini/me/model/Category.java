@@ -12,22 +12,18 @@ import lombok.ToString;
 @Builder
 @Getter
 @ToString
-@EqualsAndHashCode(of = "oauthId")
+@EqualsAndHashCode(of = "categoryId")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Oauth {
-    private Long oauthId;
-    private OAuthProvider provider;
-    private String providerId;
-    private Long userId;
+public class Category {
+    private Long categoryId;
+    private String name;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static Oauth with(Long userId, OAuthProvider provider, String providerId) {
+    public static Category from(final String name) {
         return builder()
-                .userId(userId)
-                .provider(provider)
-                .providerId(providerId)
+                .name(name)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();

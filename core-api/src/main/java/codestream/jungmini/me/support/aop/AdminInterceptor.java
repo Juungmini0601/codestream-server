@@ -3,8 +3,8 @@ package codestream.jungmini.me.support.aop;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.messaging.handler.HandlerMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class AdminInterceptor implements HandlerInterceptor {
 
             if (adminAnnotation != null) {
                 UserSession currentUser = (UserSession) request.getSession().getAttribute(Constants.USER_SESSION_KEY);
-                if (currentUser == null || !currentUser.getRole().equals(UserRole.ROLE_ADMIN.toString())) {
+                if (currentUser == null || !currentUser.getRole().equals(UserRole.ROLE_ADMIN)) {
                     throw new CustomException(ErrorType.AUTHORIZATION_ERROR, "어드민 권한이 필요한 요청입니다.");
                 }
             }

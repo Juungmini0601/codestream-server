@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="codestream.jungmini.me.database.mapper.CategoryMapper">
+    
+    <select id="existsByName" parameterType="string" resultType="boolean">
+        SELECT EXISTS(
+            SELECT 1 
+            FROM categories
+            WHERE name = #{name}
+        ) AS result
+    </select>
+
+    <insert id="save" parameterType="codestream.jungmini.me.model.Category" useGeneratedKeys="true" keyProperty="categoryId">
+        INSERT INTO categories(name, created_at, updated_at)
+        VALUES ( #{name}, #{createdAt}, #{updatedAt} )
+    </insert>
+    
+</mapper>
