@@ -2,6 +2,7 @@ package codestream.jungmini.me.api;
 
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +38,14 @@ public class CategoryRestController {
     public ApiResponse<?> updateCategoryName(
             @PathVariable Long categoryId, @Valid @RequestBody UpdateCategoryRequest request) {
         categoryService.updateCategory(categoryId, request.name());
+
+        return ApiResponse.success();
+    }
+
+    @Admin
+    @DeleteMapping("/api/v1/admin/categories/{categoryId}")
+    public ApiResponse<?> deleteCategory(@PathVariable Long categoryId) {
+        categoryService.deleteCategory(categoryId);
 
         return ApiResponse.success();
     }

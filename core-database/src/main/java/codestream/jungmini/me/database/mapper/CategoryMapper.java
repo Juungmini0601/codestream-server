@@ -16,5 +16,7 @@ public interface CategoryMapper {
 
     void update(Category category);
 
+    void deleteById(final Long id);
+
     void save(Category category);
 }

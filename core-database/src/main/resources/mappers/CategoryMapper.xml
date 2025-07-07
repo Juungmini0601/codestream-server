@@ -23,10 +23,16 @@
 
     <update id="update" parameterType="codestream.jungmini.me.model.Category">
         UPDATE categories
-        SET name = #{name},
+        SET name       = #{name},
             updated_at = #{updatedAt}
         WHERE category_id = #{categoryId}
     </update>
+
+    <delete id="deleteById" parameterType="Long">
+        DELETE
+        FROM categories
+        WHERE category_id = #{id}
+    </delete>
 
     <insert id="save" parameterType="codestream.jungmini.me.model.Category" useGeneratedKeys="true"
             keyProperty="categoryId">

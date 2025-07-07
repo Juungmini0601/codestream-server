@@ -38,6 +38,11 @@ public class CategoryRepository {
     }
 
     @Transactional
+    public void deleteById(final Long id) {
+        categoryMapper.deleteById(id);
+    }
+
+    @Transactional
     public Category save(Category category) {
         categoryMapper.save(category);
         return category;

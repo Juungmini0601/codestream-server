@@ -41,4 +41,15 @@ public class CategoryService {
 
         return category;
     }
+
+    @Transactional
+    public Category deleteCategory(final Long categoryId) {
+        Category category = categoryRepository
+                .findById(categoryId)
+                .orElseThrow(() -> new CustomException(ErrorType.VALIDATION_ERROR, "존재하지 않는 카테고리 입니다."));
+
+        categoryRepository.deleteById(category.getCategoryId());
+
+        return category;
+    }
 }

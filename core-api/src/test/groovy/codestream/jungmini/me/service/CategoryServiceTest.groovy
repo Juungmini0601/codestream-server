@@ -88,4 +88,33 @@ class CategoryServiceTest extends Specification {
         def exception = thrown(CustomException)
         exception.errorType == ErrorType.VALIDATION_ERROR
     }
+    
+    def "카테고리 삭제에 성공한다"() {
+        given:
+        def categoryId = 1L
+        def existingCategory = Category.from("Java")
+        
+        categoryRepository.findById(categoryId) >> Optional.of(existingCategory)
+        categoryRepository.deleteById(existingCategory.getCategoryId()) >> {}
+        
+        when:
+        def result = categoryService.deleteCategory(categoryId)
+        
+        then:
+        result.name == "Java"
+    }
+    
+    def "존재하지 않는 카테고리 삭제시 예외를 발생시킨다"() {
+        given:
+        def categoryId = 1L
+        
+        categoryRepository.findById(categoryId) >> Optional.empty()
+        
+        when:
+        categoryService.deleteCategory(categoryId)
+        
+        then:
+        def exception = thrown(CustomException)
+        exception.errorType == ErrorType.VALIDATION_ERROR
+    }
 }
