@@ -1,5 +1,6 @@
 package codestream.jungmini.me.database.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -46,5 +47,10 @@ public class CategoryRepository {
     public Category save(Category category) {
         categoryMapper.save(category);
         return category;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Category> findCategories(final Long cursor, final int size) {
+        return categoryMapper.findCategories(cursor, size);
     }
 }

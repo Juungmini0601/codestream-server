@@ -40,4 +40,16 @@
         VALUES (#{name}, #{createdAt}, #{updatedAt})
     </insert>
 
+    <select id="findCategories" resultType="codestream.jungmini.me.model.Category">
+        SELECT category_id, name, created_at, updated_at
+        FROM categories
+        <where>
+            <if test="cursor != null">
+                category_id > #{cursor}
+            </if>
+        </where>
+        ORDER BY category_id ASC
+        LIMIT #{size}
+    </select>
+
 </mapper>
