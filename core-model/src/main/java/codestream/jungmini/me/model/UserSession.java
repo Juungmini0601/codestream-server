@@ -20,6 +20,7 @@ public class UserSession implements Serializable {
     private Long userId;
     private String email;
     private String nickname;
+    private String profileImageUrl;
     private UserRole role;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -29,6 +30,7 @@ public class UserSession implements Serializable {
                 .userId(user.getUserId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
+                .profileImageUrl(user.getProfileImageUrl())
                 .role(user.getRole())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())

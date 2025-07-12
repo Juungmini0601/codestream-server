@@ -11,6 +11,8 @@ services:
       - "13306:3306"
     volumes:
       - ./data/mysql:/var/lib/mysql
+    networks:
+      - codestream
 
   redis:
     image: redis:7.4.1
@@ -19,3 +21,9 @@ services:
       - "16379:6379"
     volumes:
       - ./data/redis:/data
+    networks:
+      - codestream
+
+networks:
+  codestream:
+    driver: bridge
