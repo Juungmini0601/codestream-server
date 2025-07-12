@@ -37,3 +37,39 @@ CREATE TABLE IF NOT EXISTS `categories`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS `articles`
+(
+    article_id      BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `title`         VARCHAR(100) NOT NULL,
+    `author`        VARCHAR(20)  NOT NULL,
+    `description`   VARCHAR(20)  NOT NULL,
+    `thumbnail_url` VARCHAR(20)  NOT NULL,
+    `link`          VARCHAR(255) NOT NULL,
+    `created_at`    DATETIME     NOT NULL,
+    `updated_at`    DATETIME     NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+CREATE TABLE `tags`
+(
+    tag_id       BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `name`       VARCHAR(20) UNIQUE NOT NULL,
+    `created_at` DATETIME           NOT NULL,
+    `updated_at` DATETIME           NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+CREATE TABLE `article_tags`
+(
+    article_id   BIGINT   NOT NULL,
+    tag_id       BIGINT   NOT NULL,
+    `created_at` DATETIME NOT NULL,
+    PRIMARY KEY (article_id, tag_id),
+    FOREIGN KEY (article_id) REFERENCES articles (article_id) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES tags (tag_id) ON DELETE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
