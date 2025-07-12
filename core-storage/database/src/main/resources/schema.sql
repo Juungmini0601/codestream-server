@@ -1,12 +1,13 @@
 CREATE TABLE IF NOT EXISTS users
 (
-    user_id    BIGINT AUTO_INCREMENT,
-    email      VARCHAR(255)                     NOT NULL,
-    nickname   VARCHAR(20)                      NOT NULL,
-    `role`     ENUM ('ROLE_USER', 'ROLE_ADMIN') NOT NULL,
-    password   VARCHAR(255)                     NOT NULL,
-    created_at DATETIME                         NOT NULL,
-    updated_at DATETIME                         NOT NULL,
+    user_id           BIGINT AUTO_INCREMENT,
+    email             VARCHAR(255)                     NOT NULL,
+    nickname          VARCHAR(20)                      NOT NULL,
+    `role`            ENUM ('ROLE_USER', 'ROLE_ADMIN') NOT NULL,
+    `password`        VARCHAR(255)                     NOT NULL,
+    profile_image_url VARCHAR(255)                     NULL,
+    created_at        DATETIME                         NOT NULL,
+    updated_at        DATETIME                         NOT NULL,
     PRIMARY KEY (user_id),
     UNIQUE KEY unique_email (email)
 ) ENGINE = InnoDB

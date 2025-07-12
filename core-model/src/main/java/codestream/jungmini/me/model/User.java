@@ -19,6 +19,7 @@ public class User {
     private Long userId;
     private String email;
     private String nickname;
+    private String profileImageUrl;
     private String password;
     private UserRole role;
     private LocalDateTime createdAt;

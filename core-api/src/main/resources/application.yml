@@ -4,6 +4,7 @@ spring.profiles.active: local
 spring:
   config:
     import:
+      - logging.yml
       - database.yml
       - redis.yml
       - mail.yml

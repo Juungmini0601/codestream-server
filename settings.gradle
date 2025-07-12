@@ -7,10 +7,11 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'core'
+rootProject.name = 'codestream'
 
-include 'core-database'
 include 'core-api'
 include 'core-model'
-include 'core-redis'
-include 'core-mail'
+include 'core-support:mail'
+include 'core-support:logging'
+include 'core-storage:database'
+include 'core-storage:redis'

@@ -2,9 +2,10 @@ bootJar.enabled = true
 jar.enabled = false
 
 dependencies {
-    implementation project(":core-database")
-    implementation project(":core-redis")
-    implementation project(":core-mail")
+    implementation project(":core-storage:database")
+    implementation project(":core-storage:redis")
+    implementation project(":core-support:mail")
+    implementation project(":core-support:logging")
     implementation project(":core-model")
 
     // Spring MVC
