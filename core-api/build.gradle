@@ -4,6 +4,7 @@ jar.enabled = false
 dependencies {
     implementation project(":core-storage:database")
     implementation project(":core-storage:redis")
+    implementation project(":core-storage:s3")
     implementation project(":core-support:mail")
     implementation project(":core-support:logging")
     implementation project(":core-model")
