@@ -11,7 +11,11 @@ rootProject.name = 'codestream'
 
 include 'core-api'
 include 'core-model'
+
 include 'core-support:mail'
 include 'core-support:logging'
+
 include 'core-storage:database'
 include 'core-storage:redis'
+include 'core-storage:s3'
+
