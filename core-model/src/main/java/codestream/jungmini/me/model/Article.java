@@ -25,8 +25,12 @@ public class Article {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static Article from(final String title, final String author, final String description, 
-                              final String thumbnailUrl, final String link) {
+    public static Article from(
+            final String title,
+            final String author,
+            final String description,
+            final String thumbnailUrl,
+            final String link) {
         return builder()
                 .title(title)
                 .author(author)
