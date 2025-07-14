@@ -43,16 +43,16 @@ CREATE TABLE IF NOT EXISTS `articles`
     article_id      BIGINT PRIMARY KEY AUTO_INCREMENT,
     `title`         VARCHAR(100) NOT NULL,
     `author`        VARCHAR(20)  NOT NULL,
-    `description`   VARCHAR(20)  NOT NULL,
+    `description`   VARCHAR(200)  NOT NULL,
     `thumbnail_url` VARCHAR(20)  NOT NULL,
-    `link`          VARCHAR(255) NOT NULL,
+    `link`          VARCHAR(500) NOT NULL,
     `created_at`    DATETIME     NOT NULL,
     `updated_at`    DATETIME     NOT NULL
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE TABLE `tags`
+CREATE TABLE IF NOT EXISTS `tags`
 (
     tag_id       BIGINT PRIMARY KEY AUTO_INCREMENT,
     `name`       VARCHAR(20) UNIQUE NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE `tags`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE TABLE `article_tags`
+CREATE TABLE IF NOT EXISTS `article_tags`
 (
     article_id   BIGINT   NOT NULL,
     tag_id       BIGINT   NOT NULL,
