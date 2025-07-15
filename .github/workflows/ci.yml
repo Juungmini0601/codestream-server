@@ -50,3 +50,19 @@ jobs:
         run: |
             docker build -t $REGISTRY/$REPOSITORY:latest -f core-api/Dockerfile .
             docker push $REGISTRY/$REPOSITORY:latest
+
+      - name: Slack Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          channel: '#ci-cd'
+          text: |
+            *CodeStream API Server* 배포 완료!
+            
+            • *커밋*: ${{ github.sha }}
+            • *브랜치*: ${{ github.ref_name }}
+            • *이미지*: ${{ steps.login-ecr.outputs.registry }}/codestream/api-server:latest
+            • *상태*: ${{ job.status == 'success' && '✅ 성공' || '❌ 실패' }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
