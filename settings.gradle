@@ -19,3 +19,5 @@ include 'core-storage:database'
 include 'core-storage:redis'
 include 'core-storage:s3'
 
+
+include 'core-support:monitoring'

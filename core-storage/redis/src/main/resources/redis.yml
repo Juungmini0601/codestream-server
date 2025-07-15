@@ -5,6 +5,7 @@ spring:
     redis:
       host: ${redis-local-host}
       port: ${redis-local-port}
+      password: ${redis-local-password}
       timeout: 3000
 ---
 spring.config.activate.on-profile: prod
@@ -14,4 +15,5 @@ spring:
     redis:
       host: ${redis-prod-host}
       port: ${redis-prod-port}
+      password: ${redis-prod-password}
       timeout: 3000

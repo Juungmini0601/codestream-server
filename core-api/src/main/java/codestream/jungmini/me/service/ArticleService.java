@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import codestream.jungmini.me.database.repository.ArticleRepository;
-import codestream.jungmini.me.database.repository.CategoryRepository;
 import codestream.jungmini.me.database.repository.TagRepository;
 import codestream.jungmini.me.model.Article;
 import codestream.jungmini.me.model.ArticleWithDetails;
