@@ -28,3 +28,15 @@ spring:
   config:
     activate:
       on-profile: prod
+
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://${database-prod-url}/codestream
+      username: ${database-prod-username}
+      password: ${database-prod-password}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      pool-name: ChatConnectionPool
+      minimum-idle: 10 # 최소 커넥션
+      maximum-pool-size: 20 # 최대 커넥션
+      idle-timeout: 60000
+      connection-timeout: 30000

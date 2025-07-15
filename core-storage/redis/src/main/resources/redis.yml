@@ -13,5 +13,5 @@ spring:
   data:
     redis:
       host: ${redis-prod-host}
-      port: ${redis-local-port}
+      port: ${redis-prod-port}
       timeout: 3000
