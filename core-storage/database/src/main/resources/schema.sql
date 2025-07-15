@@ -43,11 +43,13 @@ CREATE TABLE IF NOT EXISTS `articles`
     article_id      BIGINT PRIMARY KEY AUTO_INCREMENT,
     `title`         VARCHAR(100) NOT NULL,
     `author`        VARCHAR(20)  NOT NULL,
-    `description`   VARCHAR(200)  NOT NULL,
-    `thumbnail_url` VARCHAR(20)  NOT NULL,
+    `description`   VARCHAR(200) NOT NULL,
+    `thumbnail_url` VARCHAR(500)  NOT NULL,
     `link`          VARCHAR(500) NOT NULL,
+    `category_id`   BIGINT       NOT NULL,
     `created_at`    DATETIME     NOT NULL,
-    `updated_at`    DATETIME     NOT NULL
+    `updated_at`    DATETIME     NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES categories (category_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;

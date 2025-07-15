@@ -16,5 +16,7 @@ public interface TagMapper {
 
     void saveArticleTags(@Param("articleTags") List<ArticleTag> articleTags);
 
+    void deleteArticleTags(@Param("articleId") Long articleId);
+
     List<Tag> findByNames(@Param("names") List<String> names);
 }

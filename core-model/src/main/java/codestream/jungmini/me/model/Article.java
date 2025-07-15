@@ -22,6 +22,7 @@ public class Article {
     private String description;
     private String thumbnailUrl;
     private String link;
+    private Long categoryId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -30,13 +31,15 @@ public class Article {
             final String author,
             final String description,
             final String thumbnailUrl,
-            final String link) {
+            final String link,
+            final Long categoryId) {
         return builder()
                 .title(title)
                 .author(author)
                 .description(description)
                 .thumbnailUrl(thumbnailUrl)
                 .link(link)
+                .categoryId(categoryId)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();

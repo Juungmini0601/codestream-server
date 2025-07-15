@@ -55,4 +55,9 @@ public class TagRepository {
             tagMapper.saveArticleTags(articleTags);
         }
     }
+
+    @Transactional
+    public void deleteArticleTags(Long articleId) {
+        tagMapper.deleteArticleTags(articleId);
+    }
 }

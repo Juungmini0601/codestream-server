@@ -23,11 +23,6 @@ public class CategoryRepository {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Category> findByName(final String name) {
-        return categoryMapper.findByName(name);
-    }
-
-    @Transactional(readOnly = true)
     public Optional<Category> findById(final Long id) {
         return categoryMapper.findById(id);
     }
