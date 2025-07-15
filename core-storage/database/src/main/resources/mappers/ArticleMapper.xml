@@ -4,8 +4,48 @@
 <mapper namespace="codestream.jungmini.me.database.mapper.ArticleMapper">
 
     <insert id="save" parameterType="codestream.jungmini.me.model.Article" useGeneratedKeys="true" keyProperty="articleId">
-        INSERT INTO articles (title, author, description, thumbnail_url, link, created_at, updated_at)
-        VALUES (#{title}, #{author}, #{description}, #{thumbnailUrl}, #{link}, #{createdAt}, #{updatedAt})
+        INSERT INTO articles (title, author, description, thumbnail_url, link, category_id, created_at, updated_at)
+        VALUES (#{title}, #{author}, #{description}, #{thumbnailUrl}, #{link}, #{categoryId}, #{createdAt}, #{updatedAt})
     </insert>
+
+    <select id="findByIdWithDetails" resultType="codestream.jungmini.me.model.ArticleWithDetails">
+        SELECT
+            a.article_id,
+            a.title,
+            a.author,
+            a.description,
+            a.thumbnail_url,
+            a.link,
+            a.created_at,
+            a.updated_at,
+            GROUP_CONCAT(DISTINCT t.name) as tagNames,
+            c.name as categoryName
+        FROM articles a
+        LEFT JOIN article_tags at ON a.article_id = at.article_id
+        LEFT JOIN tags t ON at.tag_id = t.tag_id
+        LEFT JOIN categories c ON a.category_id = c.category_id
+        WHERE a.article_id = #{articleId}
+        GROUP BY a.article_id, c.name
+    </select>
+
+    <update id="update" parameterType="codestream.jungmini.me.model.Article">
+        UPDATE articles 
+        SET title = #{title},
+            author = #{author},
+            description = #{description},
+            thumbnail_url = #{thumbnailUrl},
+            link = #{link},
+            category_id = #{categoryId},
+            updated_at = #{updatedAt}
+        WHERE article_id = #{articleId}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM articles WHERE article_id = #{articleId}
+    </delete>
+
+    <select id="existsById" resultType="boolean">
+        SELECT EXISTS(SELECT 1 FROM articles WHERE article_id = #{articleId})
+    </select>
 
 </mapper>

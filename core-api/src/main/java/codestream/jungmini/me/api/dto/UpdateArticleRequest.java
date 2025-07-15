@@ -1,5 +1,6 @@
 package codestream.jungmini.me.api.dto;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Set;
 
@@ -9,7 +10,7 @@ import jakarta.validation.constraints.Size;
 
 import codestream.jungmini.me.model.Article;
 
-public record CreateArticleRequest(
+public record UpdateArticleRequest(
         @NotBlank(message = "제목은 필수입니다") @Size(max = 255, message = "제목은 255자 이하여야 합니다") String title,
         @NotBlank(message = "작성자는 필수입니다") @Size(max = 100, message = "작성자는 100자 이하여야 합니다") String author,
         @NotBlank(message = "설명은 필수입니다") @Size(max = 1000, message = "설명은 1000자 이하여야 합니다") String description,
@@ -19,8 +20,17 @@ public record CreateArticleRequest(
         @Size(max = 3, message = "태그는 최대 3개까지 가능합니다")
                 Set<@NotBlank(message = "태그명은 필수입니다") @Size(max = 20, message = "태그명은 20자 이하여야 합니다") String> tags) {
 
-    public Article toArticle() {
-        return Article.from(title, author, description, thumbnailUrl, link, categoryId);
+    public Article toArticle(Long articleId) {
+        return Article.builder()
+                .articleId(articleId)
+                .title(title)
+                .author(author)
+                .description(description)
+                .thumbnailUrl(thumbnailUrl)
+                .link(link)
+                .categoryId(categoryId)
+                .updatedAt(LocalDateTime.now())
+                .build();
     }
 
     public Set<String> getTagNames() {

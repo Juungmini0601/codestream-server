@@ -9,12 +9,6 @@
                       WHERE name = #{name}) AS result
     </select>
 
-    <select id="findByName" parameterType="String" resultType="codestream.jungmini.me.model.Category">
-        SELECT category_id, name, created_at, updated_at
-        FROM categories
-        WHERE name = #{name}
-    </select>
-
     <select id="findById" parameterType="Long" resultType="codestream.jungmini.me.model.Category">
         SELECT category_id, name, created_at, updated_at
         FROM categories

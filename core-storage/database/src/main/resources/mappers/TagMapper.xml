@@ -25,6 +25,10 @@
         </foreach>
     </insert>
 
+    <delete id="deleteArticleTags">
+        DELETE FROM article_tags WHERE article_id = #{articleId}
+    </delete>
+
     <select id="findByNames" resultType="codestream.jungmini.me.model.Tag">
         SELECT tag_id, name, created_at, updated_at
         FROM tags
