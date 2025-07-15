@@ -25,7 +25,7 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 # Copy from build
-COPY --from=build /app/core/core-api/build/libs/*.jar app.jar
+COPY --from=build /app/core-api/build/libs/*.jar app.jar
 
 # Prod Profile
 ENV SPRING_PROFILES_ACTIVE=prod
