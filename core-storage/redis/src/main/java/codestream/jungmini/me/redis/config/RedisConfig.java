@@ -32,9 +32,15 @@ public class RedisConfig {
 
     private final int port;
 
-    public RedisConfig(@Value("${spring.data.redis.host}") String host, @Value("${spring.data.redis.port}") int port) {
+    private final String password;
+
+    public RedisConfig(
+            @Value("${spring.data.redis.host}") String host,
+            @Value("${spring.data.redis.port}") int port,
+            @Value("${spring.data.redis.password}") String password) {
         this.host = host;
         this.port = port;
+        this.password = password;
     }
 
     @Bean
@@ -49,6 +55,7 @@ public class RedisConfig {
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration(host, port);
+        configuration.setPassword(password);
         return new LettuceConnectionFactory(configuration);
     }
 
