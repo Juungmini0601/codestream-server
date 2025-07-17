@@ -18,14 +18,14 @@
             a.link,
             a.created_at,
             a.updated_at,
-            GROUP_CONCAT(DISTINCT t.name) as tagNames,
+            COALESCE(GROUP_CONCAT(DISTINCT t.name SEPARATOR ','), '') as tagNames,
             c.name as categoryName
         FROM articles a
         LEFT JOIN article_tags at ON a.article_id = at.article_id
         LEFT JOIN tags t ON at.tag_id = t.tag_id
         LEFT JOIN categories c ON a.category_id = c.category_id
         WHERE a.article_id = #{articleId}
-        GROUP BY a.article_id, c.name
+        GROUP BY a.article_id, a.title, a.author, a.description, a.thumbnail_url, a.link, a.created_at, a.updated_at, c.name
     </select>
 
     <update id="update" parameterType="codestream.jungmini.me.model.Article">
@@ -46,6 +46,52 @@
 
     <select id="existsById" resultType="boolean">
         SELECT EXISTS(SELECT 1 FROM articles WHERE article_id = #{articleId})
+    </select>
+
+    <select id="findAllWithDetails" resultType="codestream.jungmini.me.model.ArticleWithDetails">
+        SELECT
+            a.article_id,
+            a.title,
+            a.author,
+            a.description,
+            a.thumbnail_url,
+            a.link,
+            COALESCE(GROUP_CONCAT(DISTINCT t.name SEPARATOR ','), '') as tagNames,
+            a.created_at,
+            a.updated_at,
+            c.name as categoryName
+        FROM articles a
+        LEFT JOIN article_tags at ON a.article_id = at.article_id
+        LEFT JOIN tags t ON at.tag_id = t.tag_id
+        JOIN categories c ON a.category_id = c.category_id
+        <where>
+            <if test="cursor != null">
+                a.article_id &lt; #{cursor}
+            </if>
+        </where>
+        GROUP BY a.article_id
+        ORDER BY a.article_id DESC
+        LIMIT #{size}
+    </select>
+
+    <select id="findByIdWithDetail" resultType="codestream.jungmini.me.model.ArticleWithDetails">
+        SELECT
+            a.article_id,
+            a.title,
+            a.author,
+            a.description,
+            a.thumbnail_url,
+            a.link,
+            COALESCE(GROUP_CONCAT(DISTINCT t.name SEPARATOR ','), '') as tagNames,
+            a.created_at,
+            a.updated_at,
+            c.name as categoryName
+        FROM articles a
+        LEFT JOIN article_tags at ON a.article_id = at.article_id
+        LEFT JOIN tags t ON at.tag_id = t.tag_id
+        JOIN categories c ON a.category_id = c.category_id
+        WHERE a.article_id = #{articleId}
+        GROUP BY a.article_id
     </select>
 
 </mapper>

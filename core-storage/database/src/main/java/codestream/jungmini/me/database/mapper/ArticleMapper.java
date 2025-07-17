@@ -1,6 +1,7 @@
 package codestream.jungmini.me.database.mapper;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -13,6 +14,8 @@ public interface ArticleMapper {
     void save(Article article);
 
     List<ArticleWithDetails> findAllWithDetails(@Param("cursor") Long cursor, @Param("size") int size);
+
+    Optional<ArticleWithDetails> findByIdWithDetail(@Param("articleId") Long articleId);
 
     void update(Article article);
 

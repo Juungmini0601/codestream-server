@@ -1,6 +1,7 @@
 package codestream.jungmini.me.database.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,11 @@ public class ArticleRepository {
     @Transactional(readOnly = true)
     public List<ArticleWithDetails> findAllWithDetails(Long cursor, int size) {
         return articleMapper.findAllWithDetails(cursor, size);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<ArticleWithDetails> findByIdWithDetail(Long id) {
+        return articleMapper.findByIdWithDetail(id);
     }
 
     @Transactional

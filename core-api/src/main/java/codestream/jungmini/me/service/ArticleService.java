@@ -15,6 +15,7 @@ import codestream.jungmini.me.model.ArticleWithDetails;
 import codestream.jungmini.me.model.Tag;
 import codestream.jungmini.me.support.error.CustomException;
 import codestream.jungmini.me.support.error.ErrorType;
+import codestream.jungmini.me.support.response.CursorResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +25,26 @@ public class ArticleService {
     private final TagRepository tagRepository;
 
     @Transactional(readOnly = true)
-    public List<ArticleWithDetails> getArticlesWithDetails(Long cursor, int size) {
-        return articleRepository.findAllWithDetails(cursor, size);
+    public CursorResponse<ArticleWithDetails, Long> getArticlesWithDetails(Long cursor, int size) {
+        // 다음 데이터가 있는지 확인하기 위해 + 1 해서 조회
+        List<ArticleWithDetails> articles = articleRepository.findAllWithDetails(cursor, size + 1);
+        // 다음 데이터가 있으면 size가 + 1 되어 있음, 응답 데이터는 페이징 사이즈 만큼 맞추기 위해서 하나 줄여줌
+        boolean hasNext = articles.size() > size;
+
+        if (hasNext) {
+            articles.removeLast();
+        }
+
+        Long nextCursor = hasNext ? articles.getLast().getArticleId() : null;
+
+        return CursorResponse.of(articles, nextCursor, hasNext);
+    }
+
+    @Transactional(readOnly = true)
+    public ArticleWithDetails getArticlesWithDetail(final Long id) {
+        return articleRepository
+                .findByIdWithDetail(id)
+                .orElseThrow(() -> new CustomException(ErrorType.VALIDATION_ERROR, "존재하지 않는 게시글입니다."));
     }
 
     @Transactional
