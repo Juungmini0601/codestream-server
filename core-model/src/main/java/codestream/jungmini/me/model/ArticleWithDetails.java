@@ -1,7 +1,6 @@
 package codestream.jungmini.me.model;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,11 +24,11 @@ public class ArticleWithDetails {
     private String link;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-    private List<String> tagNames;
+    // 리스트로 하면 쿼리에서 매핑이 안됨!
+    private String tagNames;
     private String categoryName;
 
-    public static ArticleWithDetails from(Article article, List<String> tagNames, String categoryName) {
+    public static ArticleWithDetails from(Article article, String tagNames, String categoryName) {
         return builder()
                 .articleId(article.getArticleId())
                 .title(article.getTitle())

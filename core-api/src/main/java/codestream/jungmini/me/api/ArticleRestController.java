@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import codestream.jungmini.me.api.dto.ArticleResponse;
 import codestream.jungmini.me.api.dto.CreateArticleRequest;
 import codestream.jungmini.me.api.dto.UpdateArticleRequest;
 import codestream.jungmini.me.model.Article;
@@ -23,6 +24,7 @@ import codestream.jungmini.me.model.ArticleWithDetails;
 import codestream.jungmini.me.service.ArticleService;
 import codestream.jungmini.me.support.aop.Admin;
 import codestream.jungmini.me.support.response.ApiResponse;
+import codestream.jungmini.me.support.response.CursorResponse;
 
 @Slf4j
 @RestController
@@ -31,11 +33,27 @@ public class ArticleRestController {
 
     private final ArticleService articleService;
 
-    @GetMapping("/api/v1/admin/articles")
-    public ApiResponse<List<ArticleWithDetails>> getArticles(
+    @GetMapping("/api/v1/articles")
+    public ApiResponse<CursorResponse<ArticleResponse, Long>> getArticles(
             @RequestParam(required = false) Long cursor, @RequestParam(defaultValue = "20") int size) {
-        List<ArticleWithDetails> articles = articleService.getArticlesWithDetails(cursor, size);
-        return ApiResponse.success(articles);
+        CursorResponse<ArticleWithDetails, Long> articlesWithDetails =
+                articleService.getArticlesWithDetails(cursor, size);
+
+        List<ArticleResponse> articleResponses = articlesWithDetails.getData().stream()
+                .map(ArticleResponse::from)
+                .toList();
+
+        CursorResponse<ArticleResponse, Long> response = CursorResponse.of(
+                articleResponses, articlesWithDetails.getNextCursor(), articlesWithDetails.isHasNext());
+
+        return ApiResponse.success(response);
+    }
+
+    @GetMapping("/api/v1/articles/{id}")
+    public ApiResponse<ArticleResponse> getArticle(@PathVariable Long id) {
+        ArticleWithDetails articlesWithDetail = articleService.getArticlesWithDetail(id);
+
+        return ApiResponse.success(ArticleResponse.from(articlesWithDetail));
     }
 
     @Admin
