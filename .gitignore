@@ -1,4 +1,6 @@
 TODO.md
+docker/grafana/volume/**
+docker/prometheus/volume/**
 docker/data/**
 Claude.md
 

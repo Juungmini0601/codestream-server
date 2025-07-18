@@ -6,6 +6,7 @@ spring:
     import:
       - s3.yml
       - logging.yml
+      - monitoring.yml
       - database.yml
       - redis.yml
       - mail.yml

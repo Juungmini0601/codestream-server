@@ -25,6 +25,29 @@ services:
     networks:
       - codestream
 
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/config:/etc/prometheus
+      - ./prometheus/volume:/prometheus
+    ports:
+      - 9090:9090
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    restart: unless-stopped
+    networks:
+      - codestream
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/volume:/var/lib/grafana
+    networks:
+      - codestream
+
 networks:
   codestream:
     driver: bridge
