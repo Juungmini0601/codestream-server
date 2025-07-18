@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import codestream.jungmini.me.database.mapper.TagMapper;
 import codestream.jungmini.me.model.ArticleTag;
 import codestream.jungmini.me.model.Tag;
+import codestream.jungmini.me.model.TagWithArticleId;
 
 @Repository
 @RequiredArgsConstructor
@@ -59,5 +60,14 @@ public class TagRepository {
     @Transactional
     public void deleteArticleTags(Long articleId) {
         tagMapper.deleteArticleTags(articleId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<TagWithArticleId> findTagByArticleIds(List<Long> articleIds) {
+        if (articleIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return tagMapper.findTagByArticleIds(articleIds);
     }
 }

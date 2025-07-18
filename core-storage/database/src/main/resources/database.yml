@@ -9,19 +9,11 @@ spring:
       username: ${database-local-username}
       password: ${database-local-password}
       driver-class-name: com.mysql.cj.jdbc.Driver
-      pool-name: ChatConnectionPool
+      pool-name: CodeStreamConnectionPool
       minimum-idle: 10 # 최소 커넥션
-      maximum-pool-size: 20 # 최대 커넥션
+      maximum-pool-size: 50 # 최대 커넥션
       idle-timeout: 60000
       connection-timeout: 30000
-
-  sql:
-    init:
-      mode: always
-
-logging:
-  level:
-    chat.jungmini.me.database.mapper: DEBUG
 
 ---
 spring:
@@ -35,7 +27,7 @@ spring:
       username: ${database-prod-username}
       password: ${database-prod-password}
       driver-class-name: com.mysql.cj.jdbc.Driver
-      pool-name: ChatConnectionPool
+      pool-name: CodeStreamConnectionPool
       minimum-idle: 10 # 최소 커넥션
       maximum-pool-size: 20 # 최대 커넥션
       idle-timeout: 60000

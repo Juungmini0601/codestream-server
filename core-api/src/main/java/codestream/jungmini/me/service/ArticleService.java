@@ -1,21 +1,19 @@
 package codestream.jungmini.me.service;
 
-import java.util.List;
-import java.util.Set;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import lombok.RequiredArgsConstructor;
-
 import codestream.jungmini.me.database.repository.ArticleRepository;
+import codestream.jungmini.me.database.repository.CategoryRepository;
 import codestream.jungmini.me.database.repository.TagRepository;
-import codestream.jungmini.me.model.Article;
-import codestream.jungmini.me.model.ArticleWithDetails;
-import codestream.jungmini.me.model.Tag;
+import codestream.jungmini.me.model.*;
 import codestream.jungmini.me.support.error.CustomException;
 import codestream.jungmini.me.support.error.ErrorType;
 import codestream.jungmini.me.support.response.CursorResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -23,12 +21,43 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final TagRepository tagRepository;
+    private final CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
-    public CursorResponse<ArticleWithDetails, Long> getArticlesWithDetails(Long cursor, int size) {
-        // 다음 데이터가 있는지 확인하기 위해 + 1 해서 조회
-        List<ArticleWithDetails> articles = articleRepository.findAllWithDetails(cursor, size + 1);
-        // 다음 데이터가 있으면 size가 + 1 되어 있음, 응답 데이터는 페이징 사이즈 만큼 맞추기 위해서 하나 줄여줌
+    public CursorResponse<ArticleWithTagCategory, Long> getArticlesWithTagCategory(Long cursor, int size) {
+        List<Article> articles = articleRepository.findArticles(cursor, size + 1);
+
+        List<Category> categories = categoryRepository.findAllByIds(
+                articles.stream().map(Article::getCategoryId).toList());
+
+        List<TagWithArticleId> tags = tagRepository.findTagByArticleIds(
+                articles.stream().map(Article::getArticleId).toList());
+
+        List<ArticleWithTagCategory> articleWithTagCategories = articles.stream()
+                .map(article -> ArticleWithTagCategory.builder()
+                        .article(article)
+                        .tags(new ArrayList<>())
+                        .build())
+                .toList();
+
+        // 각 게시글 마다 카테고리와 태그 리스트를 모두 돌아서 데이터를 맞춘다.
+        for (ArticleWithTagCategory articleWithTagCategory : articleWithTagCategories) {
+            Article article = articleWithTagCategory.getArticle();
+            // 카테고리 데이터 조회
+            for (Category category : categories) {
+                if (article.getCategoryId().equals(category.getCategoryId())) {
+                    articleWithTagCategory.setCategory(category);
+                }
+            }
+
+            // 테그 데이터 조회
+            for (TagWithArticleId tag : tags) {
+                if (article.getArticleId().equals(tag.getArticleId())) {
+                    articleWithTagCategory.getTags().add(tag);
+                }
+            }
+        }
+
         boolean hasNext = articles.size() > size;
 
         if (hasNext) {
@@ -37,7 +66,7 @@ public class ArticleService {
 
         Long nextCursor = hasNext ? articles.getLast().getArticleId() : null;
 
-        return CursorResponse.of(articles, nextCursor, hasNext);
+        return CursorResponse.of(articleWithTagCategories, nextCursor, hasNext);
     }
 
     @Transactional(readOnly = true)

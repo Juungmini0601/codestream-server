@@ -1,20 +1,19 @@
 package codestream.jungmini.me.database.mapper;
 
-import java.util.List;
-import java.util.Optional;
-
+import codestream.jungmini.me.model.Category;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import codestream.jungmini.me.model.Category;
+import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface CategoryMapper {
     boolean existsByName(final String name);
 
-    Optional<Category> findByName(final String name);
-
     Optional<Category> findById(final Long id);
+
+    List<Category> findAllByIds(List<Long> ids);
 
     void update(Category category);
 

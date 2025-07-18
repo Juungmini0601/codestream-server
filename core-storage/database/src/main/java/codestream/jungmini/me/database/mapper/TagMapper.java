@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import codestream.jungmini.me.model.ArticleTag;
 import codestream.jungmini.me.model.Tag;
+import codestream.jungmini.me.model.TagWithArticleId;
 
 @Mapper
 public interface TagMapper {
@@ -19,4 +20,6 @@ public interface TagMapper {
     void deleteArticleTags(@Param("articleId") Long articleId);
 
     List<Tag> findByNames(@Param("names") List<String> names);
+
+    List<TagWithArticleId> findTagByArticleIds(@Param("articleIds") List<Long> articleIds);
 }

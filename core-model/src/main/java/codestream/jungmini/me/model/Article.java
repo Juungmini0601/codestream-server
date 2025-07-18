@@ -2,12 +2,7 @@ package codestream.jungmini.me.model;
 
 import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Builder
 @Getter
@@ -33,6 +28,7 @@ public class Article {
             final String thumbnailUrl,
             final String link,
             final Long categoryId) {
+
         return builder()
                 .title(title)
                 .author(author)

@@ -1,16 +1,14 @@
 package codestream.jungmini.me.database.repository;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
-import lombok.RequiredArgsConstructor;
-
 import codestream.jungmini.me.database.mapper.ArticleMapper;
 import codestream.jungmini.me.model.Article;
 import codestream.jungmini.me.model.ArticleWithDetails;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,8 +21,8 @@ public class ArticleRepository {
     }
 
     @Transactional(readOnly = true)
-    public List<ArticleWithDetails> findAllWithDetails(Long cursor, int size) {
-        return articleMapper.findAllWithDetails(cursor, size);
+    public List<Article> findArticles(Long cursor, int size) {
+        return articleMapper.findArticles(cursor, size);
     }
 
     @Transactional(readOnly = true)
@@ -45,5 +43,10 @@ public class ArticleRepository {
     @Transactional(readOnly = true)
     public boolean existsById(Long articleId) {
         return articleMapper.existsById(articleId);
+    }
+
+    @Transactional
+    public void saveAll(List<Article> articles) {
+        articleMapper.saveAll(articles);
     }
 }

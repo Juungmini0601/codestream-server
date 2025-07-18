@@ -7,19 +7,21 @@ import lombok.*;
 @Builder
 @Getter
 @ToString
-@EqualsAndHashCode(of = {"articleId", "tagId"})
+@EqualsAndHashCode(of = "tagId")
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticleTag {
+public class TagWithArticleId {
     private Long articleId;
     private Long tagId;
+    private String name;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    public static ArticleTag from(final Long articleId, final Long tagId) {
+    public static TagWithArticleId from(final String name) {
         return builder()
-                .articleId(articleId)
-                .tagId(tagId)
+                .name(name)
                 .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 }

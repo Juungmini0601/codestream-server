@@ -3,95 +3,83 @@
 
 <mapper namespace="codestream.jungmini.me.database.mapper.ArticleMapper">
 
-    <insert id="save" parameterType="codestream.jungmini.me.model.Article" useGeneratedKeys="true" keyProperty="articleId">
+    <insert id="save" parameterType="codestream.jungmini.me.model.Article" useGeneratedKeys="true"
+            keyProperty="articleId">
         INSERT INTO articles (title, author, description, thumbnail_url, link, category_id, created_at, updated_at)
-        VALUES (#{title}, #{author}, #{description}, #{thumbnailUrl}, #{link}, #{categoryId}, #{createdAt}, #{updatedAt})
+        VALUES (#{title}, #{author}, #{description}, #{thumbnailUrl}, #{link}, #{categoryId}, #{createdAt},
+                #{updatedAt})
     </insert>
 
-    <select id="findByIdWithDetails" resultType="codestream.jungmini.me.model.ArticleWithDetails">
+    <select id="findArticles" resultType="codestream.jungmini.me.model.Article">
         SELECT
-            a.article_id,
-            a.title,
-            a.author,
-            a.description,
-            a.thumbnail_url,
-            a.link,
-            a.created_at,
-            a.updated_at,
-            COALESCE(GROUP_CONCAT(DISTINCT t.name SEPARATOR ','), '') as tagNames,
-            c.name as categoryName
-        FROM articles a
-        LEFT JOIN article_tags at ON a.article_id = at.article_id
-        LEFT JOIN tags t ON at.tag_id = t.tag_id
-        LEFT JOIN categories c ON a.category_id = c.category_id
-        WHERE a.article_id = #{articleId}
-        GROUP BY a.article_id, a.title, a.author, a.description, a.thumbnail_url, a.link, a.created_at, a.updated_at, c.name
+            article_id,
+            title,
+            author,
+            description,
+            thumbnail_url,
+            link,
+            category_id,
+            created_at,
+            updated_at
+        FROM articles
+        <where>
+            <if test="cursor != null">
+                article_id &lt; #{cursor}
+            </if>
+        </where>
+        ORDER BY article_id DESC
+        LIMIT #{size}
     </select>
 
     <update id="update" parameterType="codestream.jungmini.me.model.Article">
-        UPDATE articles 
-        SET title = #{title},
-            author = #{author},
-            description = #{description},
+        UPDATE articles
+        SET title         = #{title},
+            author        = #{author},
+            description   = #{description},
             thumbnail_url = #{thumbnailUrl},
-            link = #{link},
-            category_id = #{categoryId},
-            updated_at = #{updatedAt}
+            link          = #{link},
+            category_id   = #{categoryId},
+            updated_at    = #{updatedAt}
         WHERE article_id = #{articleId}
     </update>
 
     <delete id="deleteById">
-        DELETE FROM articles WHERE article_id = #{articleId}
+        DELETE
+        FROM articles
+        WHERE article_id = #{articleId}
     </delete>
 
     <select id="existsById" resultType="boolean">
         SELECT EXISTS(SELECT 1 FROM articles WHERE article_id = #{articleId})
     </select>
 
-    <select id="findAllWithDetails" resultType="codestream.jungmini.me.model.ArticleWithDetails">
-        SELECT
-            a.article_id,
-            a.title,
-            a.author,
-            a.description,
-            a.thumbnail_url,
-            a.link,
-            COALESCE(GROUP_CONCAT(DISTINCT t.name SEPARATOR ','), '') as tagNames,
-            a.created_at,
-            a.updated_at,
-            c.name as categoryName
-        FROM articles a
-        LEFT JOIN article_tags at ON a.article_id = at.article_id
-        LEFT JOIN tags t ON at.tag_id = t.tag_id
-        JOIN categories c ON a.category_id = c.category_id
-        <where>
-            <if test="cursor != null">
-                a.article_id &lt; #{cursor}
-            </if>
-        </where>
-        GROUP BY a.article_id
-        ORDER BY a.article_id DESC
-        LIMIT #{size}
-    </select>
-
     <select id="findByIdWithDetail" resultType="codestream.jungmini.me.model.ArticleWithDetails">
-        SELECT
-            a.article_id,
-            a.title,
-            a.author,
-            a.description,
-            a.thumbnail_url,
-            a.link,
-            COALESCE(GROUP_CONCAT(DISTINCT t.name SEPARATOR ','), '') as tagNames,
-            a.created_at,
-            a.updated_at,
-            c.name as categoryName
+        SELECT a.article_id,
+               a.title,
+               a.author,
+               a.description,
+               a.thumbnail_url,
+               a.link,
+               COALESCE(GROUP_CONCAT(DISTINCT t.name SEPARATOR ','), '') as tagNames,
+               a.created_at,
+               a.updated_at,
+               c.name                                                    as categoryName
         FROM articles a
-        LEFT JOIN article_tags at ON a.article_id = at.article_id
-        LEFT JOIN tags t ON at.tag_id = t.tag_id
-        JOIN categories c ON a.category_id = c.category_id
+                 LEFT JOIN article_tags at
+                           ON a.article_id = at.article_id
+                 LEFT JOIN tags t ON at.tag_id = t.tag_id
+                 JOIN categories c ON a.category_id = c.category_id
         WHERE a.article_id = #{articleId}
         GROUP BY a.article_id
     </select>
+
+    <insert id="saveAll" parameterType="java.util.List">
+        INSERT INTO articles (title, author, description, thumbnail_url, link, category_id, created_at, updated_at)
+        VALUES
+        <foreach collection="list" item="article" separator=",">
+            (#{article.title}, #{article.author}, #{article.description}, #{article.thumbnailUrl}, #{article.link},
+            #{article.categoryId}, #{article.createdAt}, #{article.updatedAt})
+        </foreach>
+    </insert>
 
 </mapper>

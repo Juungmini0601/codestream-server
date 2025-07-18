@@ -1,7 +1,5 @@
 package codestream.jungmini.me.api;
 
-import java.util.List;
-
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +19,7 @@ import codestream.jungmini.me.api.dto.CreateArticleRequest;
 import codestream.jungmini.me.api.dto.UpdateArticleRequest;
 import codestream.jungmini.me.model.Article;
 import codestream.jungmini.me.model.ArticleWithDetails;
+import codestream.jungmini.me.model.ArticleWithTagCategory;
 import codestream.jungmini.me.service.ArticleService;
 import codestream.jungmini.me.support.aop.Admin;
 import codestream.jungmini.me.support.response.ApiResponse;
@@ -34,19 +33,12 @@ public class ArticleRestController {
     private final ArticleService articleService;
 
     @GetMapping("/api/v1/articles")
-    public ApiResponse<CursorResponse<ArticleResponse, Long>> getArticles(
+    public ApiResponse<CursorResponse<ArticleWithTagCategory, Long>> getArticles(
             @RequestParam(required = false) Long cursor, @RequestParam(defaultValue = "20") int size) {
-        CursorResponse<ArticleWithDetails, Long> articlesWithDetails =
-                articleService.getArticlesWithDetails(cursor, size);
+        CursorResponse<ArticleWithTagCategory, Long> articlesWithTagCategory =
+                articleService.getArticlesWithTagCategory(cursor, size);
 
-        List<ArticleResponse> articleResponses = articlesWithDetails.getData().stream()
-                .map(ArticleResponse::from)
-                .toList();
-
-        CursorResponse<ArticleResponse, Long> response = CursorResponse.of(
-                articleResponses, articlesWithDetails.getNextCursor(), articlesWithDetails.isHasNext());
-
-        return ApiResponse.success(response);
+        return ApiResponse.success(articlesWithTagCategory);
     }
 
     @GetMapping("/api/v1/articles/{id}")

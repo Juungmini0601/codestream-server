@@ -1,15 +1,13 @@
 package codestream.jungmini.me.database.repository;
 
-import java.util.List;
-import java.util.Optional;
-
+import codestream.jungmini.me.database.mapper.CategoryMapper;
+import codestream.jungmini.me.model.Category;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import lombok.RequiredArgsConstructor;
-
-import codestream.jungmini.me.database.mapper.CategoryMapper;
-import codestream.jungmini.me.model.Category;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,6 +23,11 @@ public class CategoryRepository {
     @Transactional(readOnly = true)
     public Optional<Category> findById(final Long id) {
         return categoryMapper.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Category> findAllByIds(List<Long> ids) {
+        return categoryMapper.findAllByIds(ids);
     }
 
     @Transactional
